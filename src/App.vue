@@ -1,32 +1,36 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+  <div id="app" class="app">
+    <Header v-if="headerRenderCondition" />
     <router-view/>
+    <Footer />
   </div>
 </template>
-
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+  .app{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
 </style>
+
+<script type="text/javascript">
+  require('@/assets/stylesheets/main.css')
+  require('@/assets/stylesheets/variables.css')
+  require('@/assets/stylesheets/buttons.css')
+
+  import Header from "./components/Header.vue"
+  import Footer from "./components/Footer.vue"
+
+  export default{
+    components: {
+      Header,
+      Footer
+    },
+    computed: {
+      headerRenderCondition(){
+        let filtered = ["Login", "Register"]
+        return (filtered.indexOf(this.$route.name) === -1)
+      }
+    }
+  }
+</script>

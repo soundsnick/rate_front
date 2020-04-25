@@ -1,0 +1,100 @@
+.button{
+  display: block;
+  width: 100%;
+  background: var(--primary-color);
+  font-family: inherit;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 5px;
+  font-size: 15px;
+  color: #fff;
+  outline: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.button:hover{
+  background: var(--primary-hover);
+}
+.button:active{
+  background: var(--primary-active);
+}
+.button-circled{
+  display: block;
+  width: 100%;
+  font-family: inherit;
+  padding: 15px 20px;
+  font-size: 15px;
+  cursor: pointer;
+  border-radius: 8px;
+  outline: none;
+  transition: background 0.15s;
+}
+.button-circled.no-border{
+  border: none!important;
+}
+.button-circled[data-style="default"]{
+  color: var(--primary-color);
+  background: var(--default-color);
+  border: 2px solid var(--primary-color);
+}
+.button-circled[data-style="default"]:hover{
+  background: var(--default-hover);
+}
+.button-circled[data-style="default"]:active{
+  background: var(--default-active);
+}
+.button-circled[data-style="secondary"]{
+  color: var(--primary-color);
+  background: var(--default-hover);
+  border: 2px solid var(--primary-color);
+}
+.button-circled[data-style="secondary"]:hover{
+  background: var(--default-color);
+}
+.button-circled[data-style="secondary"]:active{
+  background: var(--default-active);
+}
+.button-circled[data-style="primary"]{
+  color: var(--default-color);
+  background: var(--primary-color);
+  border: 2px solid var(--border);
+}
+.button-circled[data-style="primary"]:hover{
+  background: var(--primary-hover);
+}
+.button-circled[data-style="primary"]:active{
+  background: var(--primary-active);
+}
+
+.button-squared{
+  display: block;
+  width: 100%;
+  font-family: inherit;
+  padding: 10px 20px;
+  font-size: 15px;
+  cursor: pointer;
+  outline: none;
+  transition: background 0.15s;
+}
+.button-squared[data-style="default"]{
+  color: var(--primary-color);
+  background: var(--default-color);
+  border: 2px solid var(--primary-color);
+}
+.button-squared[data-style="default"]:hover{
+  background: var(--default-hover);
+}
+.button-squared[data-style="default"]:active{
+  background: var(--default-active);
+}
+.button-squared[data-style="primary"]{
+  color: var(--default-color);
+  background: var(--primary-color);
+  border: 2px solid var(--border);
+}
+.button-squared[data-style="primary"]:hover{
+  background: var(--primary-hover);
+}
+.button-squared[data-style="primary"]:active{
+  background: var(--primary-active);
+}
