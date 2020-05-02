@@ -3,10 +3,10 @@
   --primary-hover: #015bb5;
   --primary-active: #024d98;
   --border: rgba(0, 0, 0, 0.3);
-  --border-opaque: rgba(0, 0, 0, 0.04);
+  --border-opaque: #e6e5e5;
   --default-color: #FFF;
   --default-hover: rgb(241, 246, 255);
   --default-active: rgb(219, 232, 255);
   --grey-bg: rgba(0,0,0,.02);
-  --wide-shadow: 0 9px 27px -20px rgba(0, 0, 0, 0.7);
+  --wide-shadow: 0 9px 27px -20px rgba(0, 0, 0, 0.3);
 }

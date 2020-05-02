@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
+/* General */
 *{
   box-sizing: border-box;
 }
@@ -24,11 +25,34 @@ a{
   margin: auto;
   padding: 0 10px;
 }
+
+/* Authorisation pages */
 .login-page{
   padding: 50px 0;
 }
+
+/* InfoTable */
 .grid-three{
   display: grid;
   grid-template-columns: repeat(3, minmax(100px, 1fr));
   grid-gap: 20px;
+}
+.info-table-grid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(100px, 1fr));
+  grid-gap: 30px;
+}
+
+/* Error pages */
+.error-page{
+  max-width: 500px;
+  margin: auto;
+  margin-top: 150px;
+}
+.error-page__title{
+  font-size: 33px;
+  font-weight: 500;
+}
+.error-page__paragraph{
+  line-height: 1.5;
 }

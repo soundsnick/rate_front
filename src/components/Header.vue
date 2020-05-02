@@ -1,8 +1,8 @@
 <template>
-  <header class="header">
+  <header :class="'header ' + additionalClasses">
     <div class="container">
       <div class="logo--wrapper">
-        <span class="logo">rate.iitu.kz</span>
+        <router-link to="/" class="logo">rate.iitu.kz</router-link>
       </div>
       <div class="language--wrapper">
         <Locale />
@@ -22,6 +22,9 @@
 <style scoped>
   .header{
     padding: 15px 0;
+  }
+  .header.with-shadow{
+    box-shadow: var(--wide-shadow);
   }
   .header .container{
     display: flex;
@@ -44,6 +47,7 @@
   import SquareButton from "./buttons/SquareButton.vue"
 
   export default{
+    props: ['additionalClasses'],
     computed: {
       isAuthenticated(){
         return this.$store.getters.isAuthenticated

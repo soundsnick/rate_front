@@ -5,7 +5,9 @@
     </div>
     <div class="login-form__body">
       <LoginForm v-if="form == 'login'" />
-      <RegisterForm v-else />
+      <RegisterForm v-else-if="form == 'register'" />
+      <RestoreForm v-else-if="form == 'restore'" />
+      <span v-else>Форма не найдена</span>
     </div>
   </div>
 </template>
@@ -31,11 +33,13 @@
 <script type="text/javascript">
   import LoginForm from "../components/LoginForm.vue"
   import RegisterForm from "../components/RegisterForm.vue"
+  import RestoreForm from "../components/RestoreForm.vue"
   export default{
     props: ['form'],
     components: {
       LoginForm,
-      RegisterForm
+      RegisterForm,
+      RestoreForm
     },
     mounted(){
       this.$store.dispatch("authRedirect", { vm: this })

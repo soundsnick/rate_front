@@ -3,12 +3,7 @@
     <form class="form">
       <input class="form__field" type="text" name="email" placeholder="Email">
       <input class="form__field" type="password" name="password" placeholder="Пароль">
-      <select class="form__field" name="department">
-        <option value="null">Кафедра</option>
-        <option value="1">ИС</option>
-        <option value="2">ВТИПО</option>
-        <option value="3">МКМ</option>
-      </select>
+      <v-select v-model="selected_department" name="department" :options="departments" />
       <input class="form__button button" type="submit" value="Регистрация">
     </form>
     <div class="form__caption-block">
@@ -17,3 +12,13 @@
     </div>
   </div>
 </template>
+<script type="text/javascript">
+  export default{
+    data(){
+      return {
+        departments: ["ИС", "ВТиПО", "МКМ"],
+        selected_department: ["Кафедра"]
+      }
+    }
+  }
+</script>

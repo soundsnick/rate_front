@@ -6,11 +6,11 @@
         <span class="info-table__subtitle" v-if="subtitle">{{ subtitle }}</span>
       </div>
       <div class="info-table-nav">
-        <router-link :to="link" class="button-circled no-border" data-style="primary">{{ linkText }}</router-link>
+        <router-link :to="link" v-if="linkText" class="button-circled no-border" data-style="primary">{{ linkText }}</router-link>
       </div>
     </header>
     <div class="info-table__body" :data-style="layout">
-      <InfoTableItem v-for="item in items" :item="item"/>
+      <InfoTableItem v-for="(item, index) in items" :item="item" :key="index"/>
     </div>
   </div>
 </template>
@@ -51,6 +51,7 @@
   }
   .info-table__body[data-style="list"]{
     grid-template-columns: repeat(1, minmax(100px, 1fr));
+    grid-gap: 10px;
   }
 </style>
 <script type="text/javascript">

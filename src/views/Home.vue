@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home-page">
     <div class="container">
       <div class="home__search">
         <Search buttonStyle="secondary" />
@@ -12,6 +12,11 @@
         </div>
       </div>
       <InfoTable link="#" linkText="Посмотреть все отзывы университета" title="Отзывы Университета" subtitle="(112 отзывов)" :items="reviews" layout="grid"/>
+      <InfoTable link="#" linkText="Посмотреть все специальности" title="Топ специальностей" :items="specialities" layout="list"/>
+      <div class="info-table-grid" v-if="isAuthenticated">
+        <InfoTable title="Топ кафедры" :items="departments" layout="list"/>
+        <InfoTable title="Топ преподавателей" :items="professors" layout="list"/>
+      </div>
     </div>
   </div>
 </template>
@@ -46,12 +51,39 @@ export default {
     InfoTable
   },
   computed: {
+    isAuthenticated(){
+      return this.$store.getters.isAuthenticated
+    },
     reviews(){
       return [
         { title: 'Репутация', rate: '5.0' },
         { title: 'Репутация', rate: '5.0' },
         { title: 'Репутация', rate: '5.0' },
         { title: 'Репутация', rate: '5.0' },
+        { title: 'Репутация', rate: '5.0' },
+        { title: 'Репутация', rate: '5.0' },
+      ]
+    },
+    specialities(){
+      return [
+        { title: 'Информационная безопасность', rate: '5.0', link: 'https://google.com', subtitle: '12 отзывов' },
+        { title: 'Репутация', rate: '5.0' },
+        { title: 'Репутация', rate: '5.0' },
+        { title: 'Репутация', rate: '5.0' },
+        { title: 'Репутация', rate: '5.0' },
+        { title: 'Репутация', rate: '5.0' },
+      ]
+    },
+    departments(){
+      return [
+        { title: 'Информационная безопасность', rate: '5.0', link: 'https://google.com', subtitle: '12 отзывов' },
+        { title: 'Репутация', rate: '5.0' },
+        { title: 'Репутация', rate: '5.0' },
+      ]
+    },
+    professors(){
+      return [
+        { title: 'Информационная безопасность', rate: '5.0', link: 'https://google.com', subtitle: '12 отзывов' },
         { title: 'Репутация', rate: '5.0' },
         { title: 'Репутация', rate: '5.0' },
       ]

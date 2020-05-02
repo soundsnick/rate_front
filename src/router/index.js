@@ -21,9 +21,28 @@ Vue.use(VueRouter)
     component: () => import('../views/Register.vue')
   },
   {
+    path: '/restore',
+    name: 'Restore',
+    component: () => import('../views/Restore.vue')
+  },
+  {
     path: '/logout',
     name: 'Logout',
     component: () => import('../views/Logout.vue')
+  },
+  {
+    path: '/list',
+    name: 'List',
+    component: () => import('../views/List.vue')
+  },
+  {
+    path: '/404',
+    name: '404',
+    component: () => import('../views/errors/404.vue'),
+  },
+  {
+    path: '*',
+    redirect: '/404'
   }
 ]
 

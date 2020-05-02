@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="app">
-    <Header v-if="headerRenderCondition" />
+    <Header v-if="headerRenderCondition" :additionalClasses="isShadowed" />
     <router-view/>
     <Footer />
   </div>
@@ -28,8 +28,12 @@
     },
     computed: {
       headerRenderCondition(){
-        let filtered = ["Login", "Register"]
+        let filtered = ["Login", "Register", "Restore"]
         return (filtered.indexOf(this.$route.name) === -1)
+      },
+      isShadowed(){
+        let filtered = ["List"]
+        return (filtered.indexOf(this.$route.name) !== -1) ? "with-shadow" : ""
       }
     }
   }
