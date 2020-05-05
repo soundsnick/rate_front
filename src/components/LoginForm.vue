@@ -83,10 +83,10 @@
     },
     methods: {
       email_validate(){
-        if(this.email.indexOf("@"))
-          this.email = this.email.split("@")[0] + "@iitu.kz"
-        else
-          this.email = this.email + "@iitu.kz"
+        // if(this.email.indexOf("@"))
+        //   this.email = this.email.split("@")[0] + "@iitu.kz"
+        // else
+        //   this.email = this.email + "@iitu.kz"
       },
       login(){
         this.$store.dispatch('login', { email: this.email, password: this.password })

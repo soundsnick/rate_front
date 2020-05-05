@@ -2,9 +2,9 @@
   <div class="search-wrapper">
     <form class="search-form" v-on:submit.prevent="search">
       <input class="search__field" type="text" v-debounce:200ms="search" v-model="query" placeholder="Кафедра, Специальность, Преподаватель, Дисциплина">
-      <button class="button-circled no-border search__button" :data-style="buttonStyle" type="submit">
+      <CircleButton additionalClasses="no-border search__button" :descriptor="buttonStyle" ifType="submit">
         <font-awesome-icon icon="search" />
-      </button>
+      </CircleButton>
     </form>
     <div class="search-response" v-if="searchResult">
       <div class="search-status" v-if="searchResult.error">
@@ -77,6 +77,7 @@
 </style>
 <script type="text/javascript">
   import { debounce } from 'vue-debounce'
+  import CircleButton from './buttons/CircleButton.vue'
 
   export default {
     data(){
@@ -85,6 +86,9 @@
       }
     },
     props: ['buttonStyle'],
+    components: {
+      CircleButton
+    },
     computed: {
       searchResult(){
         return this.$store.state.searchResult

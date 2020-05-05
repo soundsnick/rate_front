@@ -5,14 +5,14 @@
         <Search buttonStyle="secondary" />
         <span class="home__search-title">Посмотреть или Оценить</span>
         <div class="home__search-buttons">
-          <router-link to="#" class="button-circled no-border" data-style="secondary">Кафедру</router-link>
-          <router-link to="#" class="button-circled no-border" data-style="secondary">Специальность</router-link>
-          <router-link to="#" class="button-circled no-border" data-style="secondary">Преподавателя</router-link>
-          <router-link to="#" class="button-circled no-border" data-style="secondary">Дисциплину</router-link>
+          <router-link to="/list/departments" class="button-circled no-border" data-style="secondary">Кафедру</router-link>
+          <router-link to="/list/specialities" class="button-circled no-border" data-style="secondary">Специальность</router-link>
+          <router-link to="/list/professors" class="button-circled no-border" data-style="secondary">Преподавателя</router-link>
+          <router-link to="/list/disciplines" class="button-circled no-border" data-style="secondary">Дисциплину</router-link>
         </div>
       </div>
       <InfoTable link="#" linkText="Посмотреть все отзывы университета" title="Отзывы Университета" subtitle="(112 отзывов)" :items="reviews" layout="grid"/>
-      <InfoTable link="#" linkText="Посмотреть все специальности" title="Топ специальностей" :items="specialities" layout="list"/>
+      <InfoTable link="/list/specialities" linkText="Посмотреть все специальности" title="Топ специальностей" :items="specialities" layout="list"/>
       <div class="info-table-grid" v-if="isAuthenticated">
         <InfoTable title="Топ кафедры" :items="departments" layout="list"/>
         <InfoTable title="Топ преподавателей" :items="professors" layout="list"/>
@@ -50,6 +50,12 @@ export default {
     Search,
     InfoTable
   },
+  beforeMount(){
+    this.$store.dispatch('getFaculties')
+    this.$store.dispatch('getDepartments')
+    this.$store.dispatch('getSpecialities')
+    this.$store.dispatch('getProfessors')
+  },
   computed: {
     isAuthenticated(){
       return this.$store.getters.isAuthenticated
@@ -65,28 +71,13 @@ export default {
       ]
     },
     specialities(){
-      return [
-        { title: 'Информационная безопасность', rate: '5.0', link: 'https://google.com', subtitle: '12 отзывов' },
-        { title: 'Репутация', rate: '5.0' },
-        { title: 'Репутация', rate: '5.0' },
-        { title: 'Репутация', rate: '5.0' },
-        { title: 'Репутация', rate: '5.0' },
-        { title: 'Репутация', rate: '5.0' },
-      ]
+      return this.$store.getters.getTopSpecialities
     },
     departments(){
-      return [
-        { title: 'Информационная безопасность', rate: '5.0', link: 'https://google.com', subtitle: '12 отзывов' },
-        { title: 'Репутация', rate: '5.0' },
-        { title: 'Репутация', rate: '5.0' },
-      ]
+      return this.$store.getters.getTopDepartments
     },
     professors(){
-      return [
-        { title: 'Информационная безопасность', rate: '5.0', link: 'https://google.com', subtitle: '12 отзывов' },
-        { title: 'Репутация', rate: '5.0' },
-        { title: 'Репутация', rate: '5.0' },
-      ]
+      return this.$store.getters.getTopProfessors
     }
   }
 }

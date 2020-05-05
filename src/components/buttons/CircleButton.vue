@@ -1,6 +1,6 @@
 <template>
-  <router-link :class="'button-squared ' + additionalClasses" :to="to" :data-style="descriptor" v-if="to">{{ text }}</router-link>
-  <button :class="'button-squared ' + additionalClasses" :data-style="descriptor" :type="ifType" v-else>
+  <router-link :class="'button-circled ' + additionalClasses" :to="to" :data-style="descriptor" v-if="to">{{ text }}</router-link>
+  <button :class="'button-circled ' + additionalClasses" :data-style="descriptor" :type="ifType" v-else>
     <slot></slot>
   </button>
 </template>

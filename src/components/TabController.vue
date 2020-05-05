@@ -2,7 +2,11 @@
   <div class="tab-controller">
     <header class="tab-header">
       <nav class="tab-header__nav">
-        <button :data-id="tab.id" :class="['tab-header__nav-button', (currentTab === tab.id) ? 'active' : '']" v-for="tab in filteredSlots" @click="switchTab(tab.id)">{{ tab.text }}</button>
+        <button
+          :key="tab.id"
+          :class="['tab-header__nav-button', (currentTab === tab.id) ? 'active' : '']"
+          v-for="tab in tabs"
+          @click="switchTab(tab.id)" >{{ tab.text }}</button>
       </nav>
     </header>
     <div class="tab-body">
@@ -24,7 +28,7 @@
     background-color: var(--grey-bg);
     padding: 15px 20px;
     font-size: 15px;
-    border-radius: 4px 4px 0 0;
+    border-radius: 8px 8px 0 0;
     cursor: pointer;
     transition: background-color 0.2s;
   }
@@ -44,26 +48,19 @@
     data(){
       return {
         currentTab: null,
-        slots: { departments: true, specialities: true, professors: true, disciplines: true }
       }
     },
     props: ['tabs'],
     methods: {
-      isSlot(payload){
-        return (this.slots[payload] !== null)
-      },
       switchTab(payload){
-        if(this.isSlot(payload)){
-          this.currentTab = payload
-        }
+        this.currentTab = payload
       }
     },
-    computed: {
-      filteredSlots(){
-        let filtered = this.tabs.filter(tab => this.isSlot(tab.id))
-        this.switchTab(filtered[0].id)
-        return filtered
-      }
+    mounted() {
+      if(this.$route.params.tab)
+        this.switchTab(this.$route.params.tab)
+      else
+        this.switchTab(this.tabs[0].id)
     }
   }
 </script>

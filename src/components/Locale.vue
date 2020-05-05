@@ -32,6 +32,7 @@
     border-radius: 4px;
     border: 1px solid var(--border);
     width: 200px;
+    overflow: hidden;
   }
   .locale-option{
     padding: 10px 10px;

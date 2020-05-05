@@ -36,6 +36,12 @@ Vue.use(VueRouter)
     component: () => import('../views/List.vue')
   },
   {
+    path: '/list/:tab',
+    name: 'ListTab',
+    component: () => import('../views/List.vue'),
+    props: true
+  },
+  {
     path: '/404',
     name: '404',
     component: () => import('../views/errors/404.vue'),
