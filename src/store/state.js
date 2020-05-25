@@ -1,4 +1,5 @@
 export default {
+  locale: '',
   loginResponse: '',
   searchResult: '',
   departments: '',

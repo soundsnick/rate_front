@@ -25,10 +25,10 @@
     data(){
       return {
         tabs: [
-          { id: 'departments', text: "Найти кафедру", content: "departments" },
-          { id: 'specialities', text: "Найти специальность", content: "specialities" },
-          { id: 'professors', text: "Найти преподавателя", content: "professors" },
-          { id: 'disciplines', text: "Найти дисциплину", content: "disciplines" }
+          { id: 'departments', text: this.$t('list.find.department'), content: "departments" },
+          { id: 'specialities', text: this.$t('list.find.speciality'), content: "specialities" },
+          { id: 'professors', text: this.$t('list.find.professor'), content: "professors" },
+          { id: 'disciplines', text: this.$t('list.find.discipline'), content: "disciplines" }
         ],
       }
     },
@@ -63,7 +63,7 @@
           {
             name: "faculty",
             selected: {
-              label: "Факультет",
+              label: this.$t('list.faculty'),
               value: 0,
             },
             options: (this.$store.state.faculties.body ? this.$store.state.faculties.body.map(faculty => ({ value: faculty.id, label: faculty.facultyName })) : [])
@@ -71,7 +71,7 @@
           {
             name: "department",
             selected: {
-              label: "Кафедра",
+              label: this.$t('list.department'),
               value: 0,
             },
             options: (this.$store.state.departments.body ? this.$store.state.departments.body.map(department => ({ value: department.id, label: department.name })) : [])
@@ -79,7 +79,7 @@
           {
             name: "speciality",
             selected: {
-              label: "Специальность",
+              label: this.$t('list.speciality'),
               value: 0,
             },
             options: (this.$store.state.specialities.body ? this.$store.state.specialities.body.map(speciality => ({ value: speciality.id, label: speciality.name })) : [])
@@ -87,7 +87,7 @@
           {
             name: "discipline",
             selected: {
-              label: "Дисциплина",
+              label: this.$t('list.discipline'),
               value: 0,
             },
             options: (this.$store.state.disciplines.body ? this.$store.state.disciplines.body.map(discipline => ({ value: discipline.id, label: discipline.name })) : [])

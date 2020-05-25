@@ -42,6 +42,11 @@ Vue.use(VueRouter)
     props: true
   },
   {
+    path: '/reviews/speciality',
+    name: 'Reviews',
+    component: () => import('../views/Reviews.vue')
+  },
+  {
     path: '/404',
     name: '404',
     component: () => import('../views/errors/404.vue'),

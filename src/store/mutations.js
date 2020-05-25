@@ -1,4 +1,7 @@
 export default {
+  setLocale(state, { locale }){
+    state.locale = locale
+  },
   setLoginResponse(state, { message }){
     state.loginResponse = message
   },

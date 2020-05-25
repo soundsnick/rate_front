@@ -6,7 +6,6 @@ export default {
     commit('clearLoginResponse')
     api.post(`/users/auth/${email}/${password}`)
       .then(response => {
-        console.log(response)
         if(response.data){
           response.data.password = "filtered"
           localStorage.setItem('access_token', JSON.stringify(response.data))
@@ -23,11 +22,28 @@ export default {
     localStorage.removeItem('access_token')
     location.reload()
   },
+  register({ commit }, payload){
+    api.post(`/users/auth/register`, { user: payload })
+      .then(response => {
+        if(response.data.id){
+          // response.data.password = "filtered"
+          localStorage.setItem('access_token', JSON.stringify(response.data))
+          location.reload()
+        }else{
+          commit('setLoginResponse', { message: "Ошибка авторизации. Проверьте правильность введенных данных" })
+        }
+      })
+      .catch(error => {
+        console.log(error)
+        commit('setLoginResponse', { message: "Ошибка авторизации. Проверьте правильность введенных данных" })
+      })
+  },
   authRedirect(context, { vm }){
     if(vm.$store.getters.isAuthenticated){
       vm.$router.push('/')
     }
   },
+
   search({ commit }, { query }){
     axios.get(`http://jsonplaceholder.typicode.com/posts?q=${query}`)
       .then(response => {
@@ -99,4 +115,5 @@ export default {
         commit('setProfessorDisciplines', { error: true })
       })
   },
+
 }

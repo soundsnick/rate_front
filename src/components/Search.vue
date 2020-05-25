@@ -1,7 +1,7 @@
 <template>
   <div class="search-wrapper">
     <form class="search-form" v-on:submit.prevent="search">
-      <input class="search__field" type="text" v-debounce:200ms="search" v-model="query" placeholder="Кафедра, Специальность, Преподаватель, Дисциплина">
+      <input class="search__field" type="text" v-debounce:200ms="search" v-model="query" v-bind:placeholder="$t('search.placeholder')">
       <CircleButton additionalClasses="no-border search__button" :descriptor="buttonStyle" ifType="submit">
         <font-awesome-icon icon="search" />
       </CircleButton>

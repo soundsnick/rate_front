@@ -9,11 +9,12 @@
       </div>
       <nav class="header-navigation">
         <div class="auth-block" v-if="isAuthenticated">
-          <button class="button-squared header-navigation__item" data-style="primary" @click="logout">Выйти</button>
+          <button class="button-squared header-navigation__item" data-style="primary" @click="logout">{{ $t('header.logout') }}</button>
         </div>
         <div class="auth-block" v-else>
-          <SquareButton additionalClasses="header-navigation__item" descriptor="default" to="/register" text="Регистрация" />
-          <SquareButton additionalClasses="header-navigation__item" descriptor="primary" to="/login" text="Вход" />
+          <Notifications />
+          <SquareButton additionalClasses="header-navigation__item" descriptor="default" to="/register" :text="$t('header.register')" />
+          <SquareButton additionalClasses="header-navigation__item" descriptor="primary" to="/login" :text="$t('header.login')" />
         </div>
       </nav>
     </div>
@@ -45,6 +46,7 @@
 <script type="text/javascript">
   import Locale from "./Locale.vue"
   import SquareButton from "./buttons/SquareButton.vue"
+  import Notifications from "./notifications/Notifications.vue"
 
   export default{
     props: ['additionalClasses'],
@@ -55,7 +57,8 @@
     },
     components: {
       Locale,
-      SquareButton
+      SquareButton,
+      Notifications
     },
     methods: {
       logout(){

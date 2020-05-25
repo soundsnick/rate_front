@@ -18,7 +18,7 @@
           Факультет: <router-link :to="rate.faculty.link">{{ rate.faculty.title }}</router-link>
         </span>
         <span class="rate-item__info" v-if="rate.disciplines">
-          Дисциплины: <router-link to="#" v-for="(discipline, index) in rate.disciplines">{{ discipline.name + (index+1 !== rate.disciplines.length) ? "," : "" }}</router-link>
+          Дисциплины: <router-link to="#" v-for="(discipline, index) in rate.disciplines" :key="index">{{ discipline.name + (index+1 !== rate.disciplines.length) ? "," : "" }}</router-link>
         </span>
         <span class="rate-item__info" v-if="rate.students_count">Количество студентов: {{ rate.students_count }}</span>
         <span class="rate-item__info" v-if="rate.professors_count">Количество преподавателей: {{ rate.professors_count }}</span>

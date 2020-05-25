@@ -51,10 +51,10 @@
       return {
         languages: [
           { text: 'Русский (Ru)', code: 'ru' },
-          { text: 'Казахский (Kk)', code: 'kk' },
+          { text: 'Қазақша (Kk)', code: 'kk' },
           { text: 'English (En)', code: 'en' }
         ],
-        currentLanguage: localStorage.language,
+        currentLanguage: localStorage.locale,
         isActive: false
       }
     },
@@ -65,18 +65,30 @@
     },
     computed: {
       currentLanguageCode(){
-        return this.currentLanguage || 'ru'
+        return this.currentLanguage || this.$i18n.locale
       }
     },
     methods: {
       changeLanguage(code){
-        localStorage.language = code
+        localStorage.locale = code
         this.isActive = false
         this.currentLanguage = code
+        this.$store.commit('setLocale', code)
       },
       showLanguageBar(){
         return false
       }
+    },
+    mounted(){
+      this.$i18n.locale = this.currentLanguageCode
+      this.$store.commit('setLocale', this.currentLanguageCode)
+    },
+    watch: {
+      currentLanguage(locale) {
+        this.$i18n.locale = locale
+        localStorage.locale = locale
+      }
     }
+
   }
 </script>

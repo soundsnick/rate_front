@@ -25,6 +25,13 @@ a{
   margin: auto;
   padding: 0 10px;
 }
+.title{
+  display: block;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: 400;
+}
 
 /* Authorisation pages */
 .login-page{
@@ -55,4 +62,22 @@ a{
 }
 .error-page__paragraph{
   line-height: 1.5;
+}
+
+/* Popup */
+.popup-tags{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(100px, 1fr));
+  grid-gap: 10px;
+}
+.popup__tag{
+  padding: 10px;
+  text-align: center;
+  border: 1px solid var(--border-opaque);
+  background-color: var(--grey-bg);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.popup__tag:hover{
+  background-color: #fff;
 }

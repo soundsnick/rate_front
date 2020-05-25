@@ -5,7 +5,7 @@
         <router-link class="logo" to="/">rate.iitu.kz</router-link>
       </div>
       <p class="footer-unauth" v-if="!isAuthenticated">
-        Вы не вошли в систему (<router-link to="login">Вход</router-link>)
+        {{ $t('footer.not_logged') }} (<router-link to="login">{{ $t('footer.login') }}</router-link>)
       </p>
     </div>
   </footer>
