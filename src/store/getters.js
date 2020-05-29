@@ -19,9 +19,20 @@ export default {
   },
   getTabSpecialities(state){
     if(state.departments.body){
-      let getDepartmentById = (id) => state.departments.body.filter(department => department.id === id )[0].name
+      // let getDepartmentById = (id) => state.departments.body.filter(department => department.id === id )[0].name
+      let getDepartmentById = (id) => {
+        let filtered = state.departments.body.filter(department => department.id === id)
+        if(filtered.length > 0){
+          return filtered[0].name
+        }
+        return false
+      }
       return ((state.specialities.body) ? state.specialities.body.map(speciality => {
-        return { title: speciality.name, link: "#", department: { title: getDepartmentById(speciality.departmentId), link: "#" }, reviews_count: 12, students_count: 300, professors_count: 50, rate: 3.5, button: { title: "Добавить отзыв", link: "#"} }
+        let body = { title: speciality.name, link: "#", reviews_count: 12, students_count: 300, professors_count: 50, rate: 3.5, button: { title: "Добавить отзыв", link: "#"} }
+        let depart = getDepartmentById(speciality.departmentId)
+        if(depart)
+          body['department'] = { title: depart, link: "#" }
+        return body
       }) : [])
     }
   },
@@ -32,7 +43,15 @@ export default {
     }) : [])
   },
   getTabDisciplines(state){
-    let getDepartmentById = (id) => state.departments.body.filter(department => department.id === id )[0].name
+    let getDepartmentById = (id) => {
+      try {
+        let filtered = state.departments.body.filter(department => department.id === id )
+      } catch (e) {
+        console.log(e, id)
+      } finally {
+
+      }
+    }
     return ((state.disciplines.body) ? state.disciplines.body.map(discipline => {
       return { title: discipline.name, link: "#", department: { title: getDepartmentById(discipline.departmentId), link: "#" }, reviews_count: 12, rate: 3.5, button: { title: "Добавить отзыв", link: "#"} }
     }) : [])
@@ -40,7 +59,13 @@ export default {
 
   getTopSpecialities(state){
     if(state.departments.body){
-      let getDepartmentById = (id) => state.departments.body.filter(department => department.id === id )[0].name
+      let getDepartmentById = (id) => {
+        let filtered = state.departments.body.filter(department => department.id === id)
+        if(filtered.length > 0){
+          return filtered[0].name
+        }
+        return false
+      }
       return ((state.specialities.body) ? state.specialities.body.map(speciality => {
         return { title: speciality.name, link: "#", department: { title: getDepartmentById(speciality.departmentId), link: "#" }, reviews_count: 12, students_count: 300, professors_count: 50, rate: 3.5, button: { title: "Добавить отзыв", link: "#"} }
       }).slice(0, 5) : [])

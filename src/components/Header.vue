@@ -9,10 +9,10 @@
       </div>
       <nav class="header-navigation">
         <div class="auth-block" v-if="isAuthenticated">
+          <Notifications v-if="isProfessor"/>
           <button class="button-squared header-navigation__item" data-style="primary" @click="logout">{{ $t('header.logout') }}</button>
         </div>
         <div class="auth-block" v-else>
-          <Notifications />
           <SquareButton additionalClasses="header-navigation__item" descriptor="default" to="/register" :text="$t('header.register')" />
           <SquareButton additionalClasses="header-navigation__item" descriptor="primary" to="/login" :text="$t('header.login')" />
         </div>
@@ -53,6 +53,9 @@
     computed: {
       isAuthenticated(){
         return this.$store.getters.isAuthenticated
+      },
+      isProfessor(){
+        return (this.isAuthenticated && JSON.parse(localStorage.access_token).professor ? true : false)
       }
     },
     components: {

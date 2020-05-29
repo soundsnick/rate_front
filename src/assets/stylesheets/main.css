@@ -81,3 +81,7 @@ a{
 .popup__tag:hover{
   background-color: #fff;
 }
+
+.vs__search, .vs__search:focus, .vs--searchable .vs__dropdown-toggle, .v-select{
+  cursor: pointer!important;
+}

@@ -7,7 +7,11 @@ export default
       more_single: "Посмотреть отзыв"
     },
     search: {
-      placeholder: "Кафедра, Специальность, Преподаватель, Дисциплина"
+      placeholder: "Кафедра, Специальность, Преподаватель, Дисциплина",
+      speciality: "Специальность",
+      department: "Кафедра",
+      discipline: "Дисциплина",
+      professor: "Профессор",
     },
     footer: {
       not_logged: "Вы не вошли в систему",
@@ -60,7 +64,11 @@ export default
       more_single: "Show the notification"
     },
     search: {
-      placeholder: "Department, Specialty, Lecturer, Discipline"
+      placeholder: "Department, Specialty, Lecturer, Discipline",
+      speciality: "Specialty",
+      department: "Department",
+      discipline: "Discipline",
+      professor: "Professor",
     },
     footer: {
       not_logged: "Not signed in",
@@ -113,7 +121,11 @@ export default
       more_single: "Хабарламаны көру"
     },
     search: {
-      placeholder: "Кафедра, Мамандық, Мұғалім, Пән"
+      placeholder: "Кафедра, Мамандық, Мұғалім, Пән",
+      speciality: "Мамандық",
+      department: "Кафедра",
+      discipline: "Пән",
+      professor: "Мұғалім",
     },
     footer: {
       not_logged: "Жүйеге кірген жоқсыз",

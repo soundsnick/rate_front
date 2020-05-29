@@ -6,7 +6,7 @@ export default {
     commit('clearLoginResponse')
     api.post(`/users/auth/${email}/${password}`)
       .then(response => {
-        if(response.data){
+        if(response.data.response !== "not_authorised"){
           response.data.password = "filtered"
           localStorage.setItem('access_token', JSON.stringify(response.data))
           location.reload()
@@ -26,16 +26,16 @@ export default {
     api.post(`/users/auth/register`, { user: payload })
       .then(response => {
         if(response.data.id){
-          // response.data.password = "filtered"
+          response.data.password = "filtered"
           localStorage.setItem('access_token', JSON.stringify(response.data))
           location.reload()
         }else{
-          commit('setLoginResponse', { message: "Ошибка авторизации. Проверьте правильность введенных данных" })
+          commit('setLoginResponse', { message: "Ошибка регистрации. Проверьте правильность введенных данных или попробуйте позже" })
         }
       })
       .catch(error => {
         console.log(error)
-        commit('setLoginResponse', { message: "Ошибка авторизации. Проверьте правильность введенных данных" })
+        commit('setLoginResponse', { message: "Ошибка регистрации. Проверьте правильность введенных данных или попробуйте позже" })
       })
   },
   authRedirect(context, { vm }){
@@ -44,15 +44,13 @@ export default {
     }
   },
 
-  search({ commit }, { query }){
-    axios.get(`http://jsonplaceholder.typicode.com/posts?q=${query}`)
-      .then(response => {
-        commit('setSearchResult', { error: false, body: response.data.slice(0,5) })
-      })
-      .catch(error => {
-        console.warn('Ошибка подключения')
-        commit('setSearchResult', { error: true })
-      });
+  search({ commit, state }, { query }){
+    let result = []
+    result = [...result, ...(state.specialities.body.filter(specialty => specialty.name.toLowerCase().indexOf(query) !== -1).map(el => ({ title: el.name, id: el.id, type: 'speciality' })))]
+    result = [...result, ...(state.departments.body.filter(specialty => specialty.name.toLowerCase().indexOf(query) !== -1).map(el => ({ title: el.name, id: el.id, type: 'department' })))]
+    result = [...result, ...(state.disciplines.body.filter(specialty => specialty.name.toLowerCase().indexOf(query) !== -1).map(el => ({ title: el.name, id: el.id, type: 'discipline' })))]
+    result = [...result, ...(state.professors.body.filter(specialty => (specialty.surname + " " + specialty.firstname).toLowerCase().indexOf(query) !== -1).map(el => ({ title: el.surname + " " + el.firstname, id: el.id, type: 'professor' })))]
+    commit('setSearchResult', { error: false, body: result })
   },
 
   getDepartments({ commit }){

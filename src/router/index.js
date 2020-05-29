@@ -43,7 +43,12 @@ Vue.use(VueRouter)
   },
   {
     path: '/reviews/speciality',
-    name: 'Reviews',
+    name: 'ReviewsSpeciality',
+    component: () => import('../views/Reviews.vue')
+  },
+  {
+    path: '/reviews/university',
+    name: 'ReviewsUniversity',
     component: () => import('../views/Reviews.vue')
   },
   {

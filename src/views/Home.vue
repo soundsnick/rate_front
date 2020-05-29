@@ -11,7 +11,7 @@
           <router-link to="/list/disciplines" class="button-circled no-border" data-style="secondary">{{ $t('home_search.discipline') }}</router-link>
         </div>
       </div>
-      <InfoTable link="#" :linkText="$t('home_tables.reviews.linkText')" :title="$t('home_tables.reviews.title')" :subtitle="$t('home_tables.reviews.count', { number: 113 })" :items="reviews" layout="grid"/>
+      <InfoTable link="/reviews/university" :linkText="$t('home_tables.reviews.linkText')" :title="$t('home_tables.reviews.title')" :subtitle="$t('home_tables.reviews.count', { number: 113 })" :items="reviews" layout="grid"/>
       <InfoTable link="/list/specialities" :linkText="$t('home_tables.specialities.linkText')" :title="$t('home_tables.specialities.title')" :items="specialities" layout="list"/>
       <div class="info-table-grid" v-if="isAuthenticated">
         <InfoTable :title="$t('home_tables.top.departments')" :items="departments" layout="list"/>
@@ -55,6 +55,7 @@
       this.$store.dispatch('getDepartments')
       this.$store.dispatch('getSpecialities')
       this.$store.dispatch('getProfessors')
+      this.$store.dispatch('getDisciplines')
     },
     computed: {
       isAuthenticated(){

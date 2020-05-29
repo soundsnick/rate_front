@@ -11,10 +11,7 @@
         <span>Проблема с интернетом</span>
       </div>
       <div class="search-items-list">
-        <div class="search__item" v-for="item in searchResult.body" :key="item.id">
-          <span class="search__item-title">{{ item.title }}</span>
-          <p class="search__item-body">{{ item.body }}</p>
-        </div>
+        <SearchItem :item="item" v-for="item in searchResult.body" :key="item.id" />
       </div>
       <div class="search-items-empty" v-if="searchResult.body.length == 0">
         <span><font-awesome-icon icon="search" style="margin-right: 10px;" /> Поиск не дал результатов</span>
@@ -23,10 +20,7 @@
   </div>
 </template>
 <style scoped>
-  .search__item-body{
-    margin: 0;
-    margin-top: 5px;
-  }
+
   .search-form{
     display: flex;
   }
@@ -60,24 +54,15 @@
     border-radius: 8px;
     margin-top: 10px;
     margin-bottom: 20px;
+    border: 1px solid var(--border-opaque);
+    box-shadow: var(--wide-shadow);
   }
-  .search__item{
-    text-align: left;
-    border-bottom: 1px solid rgba(0,0,0,.1);
-    box-shadow: 0 1px 0 #fff;
-    padding: 20px 0;
-  }
-  .search__item:last-child{
-    border-bottom: none;
-    box-shadow: none;
-  }
-  .search__item-title{
-    font-weight: 500;
-  }
+
 </style>
 <script type="text/javascript">
   import { debounce } from 'vue-debounce'
   import CircleButton from './buttons/CircleButton.vue'
+  import SearchItem from './SearchItem.vue'
 
   export default {
     data(){
@@ -87,7 +72,8 @@
     },
     props: ['buttonStyle'],
     components: {
-      CircleButton
+      CircleButton,
+      SearchItem
     },
     computed: {
       searchResult(){
