@@ -15,6 +15,7 @@
 
 <script type="text/javascript">
   require('@/assets/stylesheets/main.css')
+  require('@/assets/stylesheets/media.css')
   require('@/assets/stylesheets/variables.css')
   require('@/assets/stylesheets/buttons.css')
 

@@ -20,7 +20,8 @@ export default
     header: {
       login: "Вход",
       register: "Регистрация",
-      logout: "Выйти"
+      logout: "Выйти",
+      navigation: "Навигация"
     },
     home_search: {
       title: "Посмотреть или Оценить",
@@ -77,7 +78,8 @@ export default
     header: {
       login: "Signin",
       register: "Signup",
-      logout: "Logout"
+      logout: "Logout",
+      navigation: "Navigation"
     },
     home_search: {
       title: "View or Rate",
@@ -134,7 +136,8 @@ export default
     header: {
       login: "Кіру",
       register: "Тіркелу",
-      logout: "Шығу"
+      logout: "Шығу",
+      navigation: "Навигация"
     },
     home_search: {
       title: "Көру және бағалау",

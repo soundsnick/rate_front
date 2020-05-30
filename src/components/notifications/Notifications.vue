@@ -1,7 +1,8 @@
 <template>
   <div class="notifications">
-    <button class="notifications-button" @click="isActive = !isActive">
+    <button :class="['notifications-button', isMobile]" @click="isActive = !isActive">
       <font-awesome-icon icon="bell" />
+      <span class="notifications-button__title" v-if="isMobile">{{ $t('notifications.title') }}</span>
     </button>
     <div class="notifications-dropdown" v-if="isActive">
       <header class="notifications__header">
@@ -41,6 +42,16 @@
     cursor: pointer;
     color: var(--primary-hover);
   }
+  .notifications-button.true{
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    border: 1px solid var(--border-opaque);
+  }
+  .notifications-button__title{
+    margin-left: 15px;
+    vertical-align: text-bottom;
+  }
   .notifications__header{
     padding: 5px 10px;
   }
@@ -67,6 +78,7 @@
         isActive: false
       }
     },
+    props: ['isMobile'],
     components: {
       Notification
     }

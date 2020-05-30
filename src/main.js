@@ -6,7 +6,7 @@ import api from './api'
 import 'vue-select/dist/vue-select.css';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faSearch, faBell } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faBell, faBars } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import vueDebounce from 'vue-debounce'
 import VueI18n from 'vue-i18n'
@@ -16,6 +16,7 @@ import locales from './locales.js'
 
 library.add(faSearch)
 library.add(faBell)
+library.add(faBars)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('v-select', vSelect)
 
