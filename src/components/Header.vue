@@ -2,7 +2,7 @@
   <header :class="'header ' + additionalClasses">
     <div class="container">
       <div class="logo--wrapper">
-        <router-link to="/" class="logo">rate.iitu.kz</router-link>
+        <router-link to="/" class="logo">RateIITU</router-link>
       </div>
       <div class="language--wrapper">
         <Locale />

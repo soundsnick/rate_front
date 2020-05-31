@@ -7,6 +7,9 @@
       <p class="footer-unauth" v-if="!isAuthenticated">
         {{ $t('footer.not_logged') }} (<router-link to="login">{{ $t('footer.login') }}</router-link>)
       </p>
+      <p class="footer-unauth" v-else>
+        Вы вошли как (<router-link to="/">{{ getUser }}</router-link>)
+      </p>
     </div>
   </footer>
 </template>
@@ -27,6 +30,14 @@
     computed: {
       isAuthenticated(){
         return this.$store.getters.isAuthenticated
+      },
+      getUser(){
+        if(this.isAuthenticated){
+          return JSON.parse(localStorage.access_token).user.name
+        }
+        else {
+          return "Not logged in"
+        }
       }
     }
   }

@@ -42,13 +42,8 @@ Vue.use(VueRouter)
     props: true
   },
   {
-    path: '/reviews/speciality',
-    name: 'ReviewsSpeciality',
-    component: () => import('../views/Reviews.vue')
-  },
-  {
-    path: '/reviews/university',
-    name: 'ReviewsUniversity',
+    path: '/reviews/:code/:id',
+    name: 'Reviews',
     component: () => import('../views/Reviews.vue')
   },
   {
