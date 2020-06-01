@@ -17,6 +17,9 @@ export default {
   getSelectDepartments(state){
     return state.departments.body ? state.departments.body.map(department => { return { label: department.name, value: department.id } }) : []
   },
+  getSelectSpecialities(state){
+    return state.specialities.body ? state.specialities.body.map(department => { return { label: department.name, value: department.id } }) : []
+  },
   getTabSpecialities(state){
     if(state.departments.body){
       let getDepartmentById = (id) => {
@@ -83,5 +86,5 @@ export default {
     return ((state.professors.body) ? state.professors.body.map(professor => {
       return { title: `${professor.firstname} ${professor.surname}`, link: `/reviews/professor/${professor.id}`, reviews_count: 12, rate: 3.5, degree: professor.degree, button: { title: "Добавить отзыв", link: "#"} }
     }).slice(0, 5) : [])
-  },
+  }
 }

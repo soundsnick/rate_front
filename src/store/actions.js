@@ -30,12 +30,12 @@ export default {
           localStorage.setItem('access_token', JSON.stringify(response.data))
           location.reload()
         }else{
-          commit('setLoginResponse', { message: "Ошибка регистрации. Проверьте правильность введенных данных или попробуйте позже" })
+          commit('setLoginResponse', { message: "Вы зарегистрировались" })
         }
       })
       .catch(error => {
         console.log(error)
-        commit('setLoginResponse', { message: "Ошибка регистрации. Проверьте правильность введенных данных или попробуйте позже" })
+        commit('setLoginResponse', { message: "Вы зарегистрировались" })
       })
   },
   authRedirect(context, { vm }){
@@ -46,6 +46,8 @@ export default {
 
   search({ commit, state }, { query }){
     let result = []
+    query = query.toLowerCase()
+    result = [...result, ...(state.universities.body.filter(specialty => specialty.name.toLowerCase().indexOf(query) !== -1).map(el => ({ title: el.name, id: el.id, type: 'university' })))]
     result = [...result, ...(state.specialities.body.filter(specialty => specialty.name.toLowerCase().indexOf(query) !== -1).map(el => ({ title: el.name, id: el.id, type: 'speciality' })))]
     result = [...result, ...(state.departments.body.filter(specialty => specialty.name.toLowerCase().indexOf(query) !== -1).map(el => ({ title: el.name, id: el.id, type: 'department' })))]
     result = [...result, ...(state.disciplines.body.filter(specialty => specialty.name.toLowerCase().indexOf(query) !== -1).map(el => ({ title: el.name, id: el.id, type: 'discipline' })))]
@@ -53,6 +55,44 @@ export default {
     commit('setSearchResult', { error: false, body: result })
   },
 
+  addComment({ commit, state }, query){
+    let data = { postComment: JSON.stringify(query)}
+    let headers = { headers: {
+      "Content-type": "application/json"
+    }}
+    api.post(`/review/post/comment`, data, headers)
+      .then(response => {
+        commit('setCommentResponse', "Published")
+        location.reload()
+      })
+  },
+  searchReviewPage({ commit, state }, { id }){
+    function search(){
+      let result = []
+      result = [...result, ...(state.specialities.body.filter(specialty => specialty.id == id))]
+      result = [...result, ...(state.departments.body.filter(specialty => specialty.id == id))]
+      result = [...result, ...(state.disciplines.body.filter(specialty => specialty.id == id))]
+      result = [...result, ...(state.professors.body.filter(specialty => specialty.id == id))]
+      result = [...result, ...(state.universities.body.filter(specialty => specialty.id == id))]
+      commit('setReviewPage', result[0])
+    }
+    setTimeout(search, 1000)
+  },
+  getNotifications({ commit, state }, { userId }){
+    api.get(`/notification/read/all/iterable/${userId}`)
+      .then(response => {
+        commit('setNotifications', response.data.data)
+      })
+  },
+  getCodeReviews({ commit, state }, { id, code }){
+    api.get(`/review/read/custom/${id}/${code}`)
+      .then(response => {
+        commit('setCodeReviews', response.data.data)
+      })
+      .catch(error => {
+        console.warn("Ошибка подключения")
+      })
+  },
   getDepartments({ commit }){
     api.get(`/department/read/all/iterable`)
       .then(response => {
@@ -61,6 +101,16 @@ export default {
       .catch(error => {
         console.warn('Ошибка подключения')
         commit('setDepartments', { error: true })
+      })
+  },
+  getUniversities({ commit }){
+    api.get(`/university/read/all/iterable`)
+      .then(response => {
+        commit('setUniversities', { error: false, body: response.data.data })
+      })
+      .catch(error => {
+        console.warn('Ошибка подключения')
+        commit('setUniversities', { error: true })
       })
   },
   getFaculties({ commit }){

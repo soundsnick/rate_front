@@ -38,6 +38,7 @@
       Tab
     },
     beforeMount(){
+      this.$store.dispatch('getUniversities')
       this.$store.dispatch('getFaculties')
       this.$store.dispatch('getDepartments')
       this.$store.dispatch('getSpecialities')

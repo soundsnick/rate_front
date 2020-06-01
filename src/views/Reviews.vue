@@ -3,11 +3,14 @@
     <div class="container">
       <Search buttonStyle="primary"/>
       <div class="reviews-body">
-        <RateListItem :rate="rate"/>
+        <RateListItem :rate="rate" />
+        <SquareButton additionalClasses="review-add-button" descriptor="primary" @click.native="popup()">
+          {{ $t('review.add') }}
+        </SquareButton>
         <div class="reviews-grid">
-          <InfoTable v-if="professors" :title="$t('home_tables.top.professors')" :items="professors" layout="list" link="#" linkText="Посмотреть всех преподавателей" />
-          <div class="reviews-levels">
-            <span class="reviews__level" v-for="level in levels">{{ `${level.title}: ${level.rate}/5` }}</span>
+          <InfoTable v-if="professors && (code == 'department')" :title="$t('home_tables.top.professors')" :items="professors" layout="list" link="#" linkText="Посмотреть всех преподавателей" />
+          <div :class="['reviews-levels', (code == 'department').toString()]" v-if="levels.length > 0">
+            <span class="reviews__level" v-for="level in levels">{{ `${level.title}: ${level.rate.toFixed(1)}/5` }}</span>
           </div>
         </div>
         <div class="reviews-tags--wrapper" v-if="tags">
@@ -24,9 +27,42 @@
         </div>
       </div>
     </div>
+    <div :class="['popup--wrapper', popupState.toString()]">
+      <button type="button" class="close-button" @click="popupState = !popupState">Close</button>
+      <Popup title="Добавить отзыв" textarea="true" :reviewId="reviewPage.reviewId" :levelsHash="levelsHash" :tags="tagsArray" />
+    </div>
   </div>
 </template>
 <style scoped>
+  .close-button{
+    font-family: inherit;
+    font-size: 17px;
+    margin-bottom: 10px;
+    background: var(--primary-color);
+    border: none;
+    padding: 10px 30px;
+    color: #fff;
+    cursor: pointer;
+  }
+  .popup--wrapper{
+    display: none;
+    position: fixed;
+    padding-top: 100px;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999999999;
+    background: rgba(0,0,0,.5);
+    overflow-y: auto;
+  }
+  .popup--wrapper.true{
+    display: block;
+  }
+  .review-add-button{
+    margin-bottom: 20px;
+    padding: 20px;
+    text-align: center;
+  }
   .reviews-body{
     margin-top: 50px;
     text-align: left;
@@ -45,6 +81,17 @@
     padding: 30px 0;
     margin-left: 50px;
   }
+  .reviews-levels.false {
+    margin-left: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(100px, 1fr));
+    padding: 20px;
+    border: 1px solid var(--border-opaque);
+    border-radius: 8px;
+    margin-bottom: 30px;
+    grid-gap: 10px 30px;
+    background: var(--grey-bg);
+  }
   .reviews__level{
     display: block;
     line-height: 1.3;
@@ -60,27 +107,80 @@
   import RateListItem from '../components/RateListItem.vue'
   import InfoTable from '@/components/InfoTable.vue'
   import Review from '@/components/Review.vue'
+  import SquareButton from '@/components/buttons/SquareButton'
+  import Popup from '@/components/Popup.vue'
 
   export default {
+    data(){
+      return {
+        id: this.$route.params.id,
+        code: this.$route.params.code,
+        popupState: false
+      }
+    },
     components: {
       Search,
       RateListItem,
       InfoTable,
-      Review
+      Review,
+      SquareButton,
+      Popup
     },
     beforeMount(){
+      this.$store.dispatch('getUniversities')
+      this.$store.dispatch('getFaculties')
+      this.$store.dispatch('getDepartments')
+      this.$store.dispatch('getSpecialities')
       this.$store.dispatch('getProfessors')
+      this.$store.dispatch('getDisciplines')
+    },
+    mounted(){
+      this.$store.dispatch('searchReviewPage', { id: this.id })
+      this.$store.dispatch('getCodeReviews', { id: this.id, code: this.code })
     },
     computed: {
+      tagsArray(){
+        return ["Интересная студенческая жизнь","Веселые практические задания", "Отличная работа со студентами",
+        "Обратная связь", "Объективность", "Прислушиваются к мнению студентов", "Поддержка", "Перспективы",
+        "Возможности", "Актуальность"]
+      },
+      isAuthenticated(){
+        return this.$store.getters.isAuthenticated
+      },
+      reviewPage(){
+        return this.$store.state.reviewPage
+      },
+      codeReviews(){
+        return this.$store.state.codeReviews
+      },
       rate(){
-        return { title: "Информационные системы", link: "#", reviews_count: 12, students_count: 300, professors_count: 50, rate: 3.5, button: { title: "Добавить отзыв", link: "#"} }
+        if(this.reviewPage && this.reviewPage.id){
+          let review = this.reviewPage
+          let obj = { title: review.name || `${review.surname} ${review.firstname}`, description: review.description, rate: 3.5}
+          if(review.rate)
+            obj['rate'] = review.rate
+          if(review.reviews_count)
+            obj['reviews_count'] = review.reviews_count
+          // obj = { ...obj, ...({ link: "#", students_count: 300, professors_count: 50, button: { title: "Добавить отзыв", link: "#"})}
+          return obj
+        }else return {}
       },
       levels(){
-        return [
-          { title: "Уровень востребованности", rate: 3.5 },
-          { title: "Уровень тех.обеспечения", rate: 3.5 },
-          { title: "Квалификация преподавателей", rate: 3.5 },
-        ]
+        if(this.codeReviews.criteriaList){
+          return this.codeReviews.criteriaList.map(el => {
+            let criteria = {
+              title: el.name
+            }
+            criteria['rate'] = this.codeReviews.commentCustomList.map(com => {
+              let critList = com.criteriaCommentList.filter(cri => cri.criteriaId == el.id)
+              return (critList.length > 0) ? critList[0].score : 0
+            })
+            criteria.rate = (criteria.rate.reduce(function (sum, value) {
+                return sum + value;
+            }, 0) / criteria.rate.length);
+            return criteria
+          })
+        }else return []
       },
       professors(){
         return [
@@ -90,6 +190,11 @@
         ]
       },
       tags(){
+        if(this.codeReviews.commentCustomList && this.codeReviews.commentCustomList.length > 0){
+          return [...new Set(this.codeReviews.commentCustomList.reduce((acc, el) => {
+            return (el.comment.feedback) ? [...acc, ...el.comment.feedback.split(',')] : acc
+          }, []))].map((el, index) => ({ title: el, key: index }))
+        }else return []
         return [
           { title: "Классно", key: 0},
           { title: "Интересно", key: 1},
@@ -98,85 +203,43 @@
           { title: "Пойдет", key: 4},
         ]
       },
+      levelsHash(){
+        if(this.codeReviews.criteriaList){
+          return this.codeReviews.criteriaList.reduce((acc, el) => {
+            return {
+              ...acc,
+              [el.id]: el.name
+            }
+          }, {})
+        }else return {}
+      },
       reviews(){
-        return [
-          {
-            id: 0,
-            date: '20.03.2020',
-            levels: [
-              { title: "Уровень востребованности", rate: 3.5 },
-              { title: "Уровень тех.обеспечения", rate: 3.5 },
-              { title: "Квалификация преподавателей", rate: 3.5 },
-            ],
-            text: "Lorem ipsum",
-            tags: [
-              { title: "Классно", key: 0},
-              { title: "Интересно", key: 1},
-              { title: "Все круто", key: 2},
-              { title: "Качественно", key: 3},
-              { title: "Пойдет", key: 4},
-            ],
-            likes: 2,
-            dislikes: 1
-          },
-          {
-            id: 1,
-            date: '20.03.2020',
-            levels: [
-              { title: "Уровень востребованности", rate: 3.5 },
-              { title: "Уровень тех.обеспечения", rate: 3.5 },
-              { title: "Квалификация преподавателей", rate: 3.5 },
-            ],
-            text: "Lorem ipsum",
-            tags: [
-              { title: "Классно", key: 0},
-              { title: "Интересно", key: 1},
-              { title: "Все круто", key: 2},
-              { title: "Качественно", key: 3},
-              { title: "Пойдет", key: 4},
-            ],
-            likes: 2,
-            dislikes: 1
-          },
-          {
-            id: 1,
-            date: '20.03.2020',
-            levels: [
-              { title: "Уровень востребованности", rate: 3.5 },
-              { title: "Уровень тех.обеспечения", rate: 3.5 },
-              { title: "Квалификация преподавателей", rate: 3.5 },
-            ],
-            text: "Lorem ipsum",
-            tags: [
-              { title: "Классно", key: 0},
-              { title: "Интересно", key: 1},
-              { title: "Все круто", key: 2},
-              { title: "Качественно", key: 3},
-              { title: "Пойдет", key: 4},
-            ],
-            likes: 3,
-            dislikes: 2
-          },
-          {
-            id: 1,
-            date: '20.03.2020',
-            levels: [
-              { title: "Уровень востребованности", rate: 3.5 },
-              { title: "Уровень тех.обеспечения", rate: 3.5 },
-              { title: "Квалификация преподавателей", rate: 3.5 },
-            ],
-            text: "Lorem ipsum",
-            tags: [
-              { title: "Классно", key: 0},
-              { title: "Интересно", key: 1},
-              { title: "Все круто", key: 2},
-              { title: "Качественно", key: 3},
-              { title: "Пойдет", key: 4},
-            ]
-          }
-        ]
+        if(this.codeReviews.commentCustomList && this.codeReviews.commentCustomList.length > 0){
+          return this.codeReviews.commentCustomList.map(el => {
+            let obj = {
+              id: el.comment.id,
+              date: el.comment.createdDate || "Не задано",
+              levels: el.criteriaCommentList.map(fb => {
+                return {
+                  title: this.levelsHash[fb.criteriaId] || "Неизвестный критерий",
+                  rate: fb.score
+                }
+              }),
+              text: el.comment.text,
+            }
+            if(el.comment.feedback){
+              obj.tags = el.comment.feedback.split(',').map((fb, index) => ({ title: fb, key: index}))
+            }
+            return obj
+          })
+        }else return []
       }
 
+    },
+    methods: {
+      popup(){
+        this.popupState = !this.popupState
+      }
     }
   }
 </script>

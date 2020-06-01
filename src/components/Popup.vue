@@ -1,29 +1,21 @@
 <template>
   <div class="popup">
     <span class="popup__title">{{ title }}</span>
-    <div class="popup-level" v-for="(rate, index) in rates" :key="index">
-      <span class="popup-level__title">{{ rate.title }}</span>
-      <div class="stars popup-star" :style="rateToGradient(rate.rate)" v-if="rate.rate"></div>
-      <div class="popup__bools" v-if="rate.bools">
-        <span class="popup__bool">{{ rate.bools[0] }}</span>
-        <span class="popup__bool">{{ rate.bools[1] }}</span>
-      </div>
+    <div class="popup-level" v-for="(rate, index) in Object.keys(levelsHash)" :key="index">
+      <span class="popup-level__title">{{ levelsHash[rate] }}</span>
+      <input type="number" max="5" min="0" :data-id="`criteria${rate}`" value="0" />
     </div>
-    <div class="popup__dropdowns">
-      <v-select name="dropdown" :options="dropdown.option" v-for="dropdown in dropdowns" />
-    </div>
-    <span class="popup__subtitle">Выберите 3 тега</span>
-    <div class="popup-tags">
-      <div class="popup__tag" v-for="tag in tags" :key="tag.key">
-        {{ tag.title }}
-      </div>
-    </div>
+    <span class="popup__subtitle">Выберите теги</span>
+
+    <v-select :options="tags" v-model="feedback" multiple />
     <div class="popup-textarea--wrapper" v-if="textarea">
-      <span class="popup__subtitle">Более подробно:</span>
-      <textarea class="popup-textarea"></textarea>
+      <span class="popup__subtitle" >Текст отзыва:</span>
+      <textarea class="popup-textarea" v-model="comment"></textarea>
     </div>
     <div class="popup__button--wrapper">
-      <CircleButton text="Добавить отзыв" to="#" additionalClasses="no-border rate-item-button popup__button" descriptor="primary" />
+      <CircleButton additionalClasses="no-border rate-item-button popup__button" descriptor="primary" @click.native="addComment()">
+        Добавить отзыв
+      </CircleButton>
     </div>
   </div>
 </template>
@@ -102,7 +94,13 @@
   import CircleButton from './buttons/CircleButton.vue'
 
   export default {
-    props: ['title', 'rates', 'tags', 'textarea', 'dropdowns'],
+    data(){
+      return {
+        feedback: [],
+        comment: ""
+      }
+    },
+    props: ['title', 'rates', 'tags', 'textarea', 'dropdowns', 'reviewId', 'levelsHash'],
     components: {
       CircleButton
     },
@@ -110,6 +108,26 @@
       rateToGradient(rate){
         return `background: linear-gradient(to right, #FFC107 ${(rate/5)*100}%, #E4E4E4 0);`
       },
+      addComment(){
+        let feedbacks = this.feedback.join(',')
+        let criterias = Object.keys(this.levelsHash).reduce((acc, el) => {
+          return {
+            ...acc,
+            [el]: document.querySelector(`input[data-id='criteria${el}']`).value
+          }
+        }, {})
+        let comment = this.comment
+        let query = {
+          comment: {
+            feedback: feedbacks,
+            reviewId: this.reviewId,
+            text: comment,
+            userId: JSON.parse(localStorage.access_token).user.id
+          },
+          criteriaCommentList: Object.keys(criterias).map(key => ({ criteriaId: key, score: criterias[key] }))
+        }
+        this.$store.dispatch('addComment', query)
+      }
     }
   }
 </script>

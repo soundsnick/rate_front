@@ -47,6 +47,11 @@ Vue.use(VueRouter)
     component: () => import('../views/Reviews.vue')
   },
   {
+    path: '/confirm/user/:id/:code',
+    name: 'Confirm',
+    component: () => import('../views/Confirm.vue')
+  },
+  {
     path: '/404',
     name: '404',
     component: () => import('../views/errors/404.vue'),

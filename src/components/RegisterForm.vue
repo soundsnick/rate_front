@@ -8,6 +8,8 @@
       <input class="form__field" type="text" name="name" placeholder="Ваше ФИО" v-model="name">
       <input class="form__field" type="password" name="password" placeholder="Пароль" v-model="password">
       <v-select v-model="selected_department" name="department" :options="departments" />
+      <br>
+      <v-select v-model="selected_speciality" name="speciality" :options="specialities" />
       <input class="form__button button" type="submit" value="Регистрация">
     </form>
     <div class="form__caption-block">
@@ -21,6 +23,7 @@
     data(){
       return {
         selected_department: { label: "Кафедра", value: 0},
+        selected_speciality: { label: "Специальность", value: 0},
         email: '',
         password: '',
         name: ''
@@ -28,10 +31,14 @@
     },
     beforeCreate(){
       this.$store.dispatch('getDepartments')
+      this.$store.dispatch('getSpecialities')
     },
     computed: {
       departments(){
         return this.$store.getters.getSelectDepartments
+      },
+      specialities(){
+        return this.$store.getters.getSelectSpecialities
       },
       loginResponse(){ return this.$store.state.loginResponse }
     },

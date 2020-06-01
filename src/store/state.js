@@ -7,5 +7,9 @@ export default {
   specialities: '',
   professors: '',
   disciplines: '',
-  professorDisciplines: ''
+  universities: '',
+  professorDisciplines: '',
+  reviewPage: {},
+  codeReviews: {},
+  commentResponse: null
 }

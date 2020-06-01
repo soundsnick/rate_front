@@ -10,6 +10,9 @@
         </div>
       </header>
       <div class="rate-item__body">
+        <span class="rate-item__info" v-if="rate.description">
+          Описание: {{ rate.description }}
+        </span>
         <span class="rate-item__info" v-if="rate.reviews_count">{{ rate.reviews_count }} отзывов</span>
         <span class="rate-item__info" v-if="rate.department">
           Кафедра: <router-link :to="rate.department.link">{{ rate.department.title }}</router-link>

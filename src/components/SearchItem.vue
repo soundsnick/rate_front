@@ -1,6 +1,6 @@
 <template>
   <div class="search__item">
-    <router-link to="#" class="search__item-title">{{ item.title }}</router-link>
+    <router-link :to="'/reviews/'+item.type+'/'+item.id" class="search__item-title">{{ item.title }}</router-link>
     <b :class="['search__item-type', item.type]">{{ typeToString(item.type) }}</b>
   </div>
 </template>
@@ -56,6 +56,7 @@
           'department': this.$t('search.department'),
           'discipline': this.$t('search.discipline'),
           'professor': this.$t('search.professor'),
+          'university': this.$t('search.university'),
         }
         return types[type] || ""
       }

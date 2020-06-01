@@ -14,6 +14,9 @@ export default {
   setDepartments(state, payload){
     state.departments = payload
   },
+  setUniversities(state, payload){
+    state.universities = payload
+  },
   setFaculties(state, payload){
     state.faculties = payload
   },
@@ -28,5 +31,17 @@ export default {
   },
   setProfessorDisciplines(state, payload){
     state.professorDisciplines = payload
+  },
+  setReviewPage(state, payload){
+    state.reviewPage = payload
+  },
+  setCodeReviews(state, payload){
+    state.codeReviews = payload
+  },
+  setNotifications(state, payload){
+    state.notifications = payload
+  },
+  setCommentResponse(state, payload){
+    state.commentResponse = payload
   }
 }

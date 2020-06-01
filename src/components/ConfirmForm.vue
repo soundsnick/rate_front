@@ -4,8 +4,8 @@
       <div class="form-response" v-if="loginResponse">
         <span>{{ loginResponse }}</span>
       </div>
-      <input class="form__field" type="text" @change="email_validate" v-model="email" placeholder="Email">
-      <input class="form__field" type="password" v-model="password" placeholder="Пароль">
+      <input class="form__field" type="text" :value="idUser" placeholder="ID">
+      <input class="form__field" type="password"  :value="idCode" placeholder="Код подтверждения">
       <input class="form__button button" type="submit" value="Вход">
       <router-link class="form__link" to="/register">Зарегистрироваться</router-link>
     </form>
@@ -79,7 +79,13 @@
       }
     },
     computed: {
-      loginResponse(){ return this.$store.state.loginResponse }
+      loginResponse(){ return this.$store.state.loginResponse },
+      idUser(){
+        return this.$route.params.id
+      },
+      idCode(){
+        return this.$route.params.code
+      }
     },
     methods: {
       email_validate(){

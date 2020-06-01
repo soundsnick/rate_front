@@ -33,7 +33,8 @@
       },
       getUser(){
         if(this.isAuthenticated){
-          return JSON.parse(localStorage.access_token).user.name
+          let user = JSON.parse(localStorage.access_token)
+          return (user.user) ? user.user.name : user.professor.firstname + " " + user.professor.surname
         }
         else {
           return "Not logged in"

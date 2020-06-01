@@ -1,7 +1,10 @@
 <template>
   <div class="notification">
     <p class="notification__text">{{ notification.text }}</p>
-    <router-link to="/" class="notification__more">{{ $t('notifications.more_single') }}</router-link>
+    <div class="notification__control">
+      <span class="notification__date">{{ notification.createdDate }}</span>
+      <router-link :to="notification.link" class="notification__more">{{ $t('notifications.more_single') }}</router-link>
+    </div>
   </div>
 </template>
 <style scoped>
@@ -17,6 +20,16 @@
   }
   .notification:last-child{
     border-bottom: none;
+  }
+  .notification__control{
+    display: flex;
+    align-items: baseline;
+  }
+  .notification__date {
+    display: block;
+    margin-right: auto;
+    color: grey;
+    font-size: 12px;
   }
   .notification__text{
     text-align: left;

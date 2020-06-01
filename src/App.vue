@@ -1,6 +1,9 @@
 <template>
   <div id="app" class="app">
     <Header v-if="headerRenderCondition" :additionalClasses="isShadowed" />
+    <p class="warning" v-if="!notConfirmed">
+      Мы отправили вам письмо с подтверждением электронной почты!
+    </p>
     <router-view/>
     <Footer />
   </div>
@@ -35,7 +38,13 @@
       isShadowed(){
         let filtered = ["List"]
         return (filtered.indexOf(this.$route.name) !== -1) ? "with-shadow" : ""
+      },
+      notConfirmed(){
+        if(localStorage.access_token){
+          let user = JSON.parse(localStorage.access_token)
+          return (user.user) ? user.user.isVerified : true
+        }else return true
       }
-    }
+    },
   }
 </script>

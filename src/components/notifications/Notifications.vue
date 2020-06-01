@@ -9,9 +9,7 @@
         <span class="notifications__title">{{ $t('notifications.title') }}</span>
       </header>
       <div class="notifications-body">
-        <Notification :notification="{ text: `Вам оставили отзыв по дисциплине 'SDP-1'`, id: 1}" />
-        <Notification :notification="{ text: `Вам оставили отзыв по дисциплине 'SDP-2'`, id: 3}" />
-        <Notification :notification="{ text: `Вам оставили отзыв по дисциплине 'SDP-3'`, id: 2}" />
+        <Notification :notification="notification" v-for="notification in notifications" />
       </div>
       <router-link to="/" class="notifications__more">{{ $t('notifications.more_all') }}</router-link>
     </div>
@@ -76,6 +74,20 @@
     data(){
       return {
         isActive: false
+      }
+    },
+    beforeMount(){
+      this.$store.dispatch('getNotifications', { userId: JSON.parse(localStorage.access_token).professor.id })
+    },
+    computed: {
+      notifications(){
+        return this.$store.state.notifications.map(el => {
+          return {
+            text: "Вам оставили отзыв.",
+            link: `/reviews/professor/${el.userId}`,
+            createdDate: el.createdDate
+          }
+        })
       }
     },
     props: ['isMobile'],

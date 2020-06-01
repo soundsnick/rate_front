@@ -1,6 +1,9 @@
 export default
 {
   ru: {
+    review: {
+      add: "Добавить отзыв"
+    },
     notifications: {
       title: "Уведомления",
       more_all: "Смотреть все",
@@ -12,6 +15,7 @@ export default
       department: "Кафедра",
       discipline: "Дисциплина",
       professor: "Профессор",
+      university: "Университет",
     },
     footer: {
       not_logged: "Вы не вошли в систему",
@@ -59,6 +63,9 @@ export default
     }
   },
   en: {
+    review: {
+      add: "Add Review"
+    },
     notifications: {
       title: "Notifications",
       more_all: "Show all",
@@ -70,6 +77,7 @@ export default
       department: "Department",
       discipline: "Discipline",
       professor: "Professor",
+      university: "University"
     },
     footer: {
       not_logged: "Not signed in",
@@ -117,6 +125,9 @@ export default
     }
   },
   kk: {
+    review: {
+      add: "Добавить отзыв"
+    },
     notifications: {
       title: "Хабарламалар",
       more_all: "Барлығын көру",
@@ -128,6 +139,7 @@ export default
       department: "Кафедра",
       discipline: "Пән",
       professor: "Мұғалім",
+      university: "Университет"
     },
     footer: {
       not_logged: "Жүйеге кірген жоқсыз",
