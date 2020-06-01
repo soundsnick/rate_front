@@ -8,7 +8,6 @@
           {{ $t('review.add') }}
         </SquareButton>
         <div class="reviews-grid">
-          <InfoTable v-if="professors && (code == 'department')" :title="$t('home_tables.top.professors')" :items="professors" layout="list" link="#" linkText="Посмотреть всех преподавателей" />
           <div :class="['reviews-levels', (code == 'department').toString()]" v-if="levels.length > 0">
             <span class="reviews__level" v-for="level in levels">{{ `${level.title}: ${level.rate.toFixed(1)}/5` }}</span>
           </div>
@@ -109,6 +108,7 @@
   import Review from '@/components/Review.vue'
   import SquareButton from '@/components/buttons/SquareButton'
   import Popup from '@/components/Popup.vue'
+  import api from '@/api'
 
   export default {
     data(){
@@ -133,12 +133,17 @@
       this.$store.dispatch('getSpecialities')
       this.$store.dispatch('getProfessors')
       this.$store.dispatch('getDisciplines')
+      this.$store.dispatch('getRating', { id: this.id, code: this.code })
     },
     mounted(){
       this.$store.dispatch('searchReviewPage', { id: this.id })
       this.$store.dispatch('getCodeReviews', { id: this.id, code: this.code })
+      this.redirectIfAuth()
     },
     computed: {
+      getRating(){
+        return this.$store.state.rating
+      },
       isStudent(){
         return (localStorage.access_token) ? JSON.parse(localStorage.access_token).user : false
       },
@@ -159,9 +164,7 @@
       rate(){
         if(this.reviewPage && this.reviewPage.id){
           let review = this.reviewPage
-          let obj = { title: review.name || `${review.surname} ${review.firstname}`, description: review.description, rate: 3.5}
-          if(review.rate)
-            obj['rate'] = review.rate
+          let obj = { title: review.name || `${review.surname} ${review.firstname}`, description: review.description, rate: this.getRating}
           if(review.reviews_count)
             obj['reviews_count'] = review.reviews_count
           // obj = { ...obj, ...({ link: "#", students_count: 300, professors_count: 50, button: { title: "Добавить отзыв", link: "#"})}
@@ -235,6 +238,12 @@
     methods: {
       popup(){
         this.popupState = !this.popupState
+      },
+      redirectIfAuth(){
+        let rout = ["university", "speciality"]
+        if(rout.indexOf(this.code) == -1 && !this.isAuthenticated){
+          this.$router.push('/')
+        }
       },
     }
   }

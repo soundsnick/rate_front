@@ -84,7 +84,7 @@ export default {
   getTopProfessors(state){
     let getDisciplinesById = (id) => state.disciplines.body.filter(discipline => discipline.id === id )[0].name
     return ((state.professors.body) ? state.professors.body.map(professor => {
-      return { title: `${professor.firstname} ${professor.surname}`, link: `/reviews/professor/${professor.id}`, reviews_count: 12, rate: 3.5, degree: professor.degree, button: { title: "Добавить отзыв", link: "#"} }
+      return { id: professor.id, title: `${professor.firstname} ${professor.surname}`, link: `/reviews/professor/${professor.id}`, reviews_count: 12, rate: 3.5, degree: professor.degree, button: { title: "Добавить отзыв", link: "#"} }
     }).slice(0, 5) : [])
   }
 }

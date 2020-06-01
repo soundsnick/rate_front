@@ -2,6 +2,21 @@ import api from '@/api'
 import axios from 'axios'
 
 export default {
+  getRating({ commit }, { id, code }){
+    let url = `/review/read/rating/other/${id}/${code}`
+    if(code == "professor"){
+      url = `/review/read/rating/professor/${id}`
+    }
+    api.get(url)
+      .then(response => {
+        if(response.data.data.overallScore){
+          commit('setRating', response.data.data.overallScore)
+        }
+      })
+      .catch(error => {
+        console.warn('...')
+      })
+  },
   login({ commit }, { email, password }){
     commit('clearLoginResponse')
     api.post(`/users/auth/${email}/${password}`)

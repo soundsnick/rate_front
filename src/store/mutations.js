@@ -43,5 +43,8 @@ export default {
   },
   setCommentResponse(state, payload){
     state.commentResponse = payload
+  },
+  setRating(state, payload){
+    state.rating = payload
   }
 }

@@ -11,5 +11,6 @@ export default {
   professorDisciplines: '',
   reviewPage: {},
   codeReviews: {},
-  commentResponse: null
+  commentResponse: null,
+  rating: 0
 }

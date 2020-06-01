@@ -11,7 +11,7 @@
           <router-link to="/list/disciplines" class="button-circled no-border" data-style="secondary">{{ $t('home_search.discipline') }}</router-link>
         </div>
       </div>
-      <InfoTable link="/reviews/university" :linkText="$t('home_tables.reviews.linkText')" :title="$t('home_tables.reviews.title')" :subtitle="$t('home_tables.reviews.count', { number: 113 })" :items="reviews" layout="grid"/>
+      <InfoTable link="/reviews/university/5ed50ed5ef4f1c362c7a4bf5" :linkText="$t('home_tables.reviews.linkText')" :title="$t('home_tables.reviews.title')" :subtitle="$t('home_tables.reviews.count', { number: countReviews })" :items="reviews" layout="grid"/>
       <InfoTable link="/list/specialities" :linkText="$t('home_tables.specialities.linkText')" :title="$t('home_tables.specialities.title')" :items="specialities" layout="list"/>
       <div class="info-table-grid" v-if="isAuthenticated">
         <InfoTable :title="$t('home_tables.top.departments')" :items="departments" layout="list"/>
@@ -43,6 +43,7 @@
 <script>
   import Search from '@/components/Search.vue'
   import InfoTable from '@/components/InfoTable.vue'
+  import api from '@/api'
 
   export default {
     name: 'Home',
@@ -58,19 +59,37 @@
       this.$store.dispatch('getProfessors')
       this.$store.dispatch('getDisciplines')
     },
+    mounted(){
+      this.$store.dispatch('getCodeReviews', { id: "5ed50ed5ef4f1c362c7a4bf5", code: "university" })
+    },
     computed: {
+      countReviews(){
+        if(this.codeReviews.commentCustomList){
+          return this.codeReviews.commentCustomList.length
+        }else return 0
+      },
       isAuthenticated(){
         return this.$store.getters.isAuthenticated
       },
+      codeReviews(){
+        return this.$store.state.codeReviews
+      },
       reviews(){
-        return [
-          { title: 'Репутация', rate: '5.0' },
-          { title: 'Репутация', rate: '5.0' },
-          { title: 'Репутация', rate: '5.0' },
-          { title: 'Репутация', rate: '5.0' },
-          { title: 'Репутация', rate: '5.0' },
-          { title: 'Репутация', rate: '5.0' },
-        ]
+        if(this.codeReviews.criteriaList){
+          return this.codeReviews.criteriaList.map(el => {
+            let criteria = {
+              title: el.name
+            }
+            criteria['rate'] = this.codeReviews.commentCustomList.map(com => {
+              let critList = com.criteriaCommentList.filter(cri => cri.criteriaId == el.id)
+              return (critList.length > 0) ? critList[0].score : 0
+            })
+            criteria.rate = (criteria.rate.reduce(function (sum, value) {
+                return sum + value;
+            }, 0) / criteria.rate.length);
+            return criteria
+          })
+        }else return []
       },
       specialities(){
         return this.$store.getters.getTopSpecialities
