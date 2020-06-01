@@ -96,6 +96,7 @@
   export default {
     data(){
       return {
+        grade: "",
         feedback: [],
         comment: ""
       }
@@ -119,7 +120,7 @@
         let comment = this.comment
         let query = {
           comment: {
-            feedback: feedbacks,
+            tags: feedbacks,
             reviewId: this.reviewId,
             text: comment,
             userId: JSON.parse(localStorage.access_token).user.id

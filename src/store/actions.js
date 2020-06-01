@@ -8,6 +8,7 @@ export default {
       .then(response => {
         if(response.data.response !== "not_authorised"){
           response.data.password = "filtered"
+          localStorage.removeItem('register_token')
           localStorage.setItem('access_token', JSON.stringify(response.data))
           location.reload()
         }else{
@@ -20,22 +21,39 @@ export default {
   },
   logout(context){
     localStorage.removeItem('access_token')
+    localStorage.removeItem('register_token')
     location.reload()
   },
   register({ commit }, payload){
-    api.post(`/users/auth/register`, { user: payload })
+    let data = JSON.stringify(payload)
+    let headers = { headers: {
+      "Content-type": "application/json"
+    }}
+    api.post(`/users/auth/register`, data, headers)
       .then(response => {
         if(response.data.id){
-          response.data.password = "filtered"
-          localStorage.setItem('access_token', JSON.stringify(response.data))
-          location.reload()
+          localStorage.setItem('register_token', JSON.stringify(response.data))
+          commit('setLoginResponse', { message: "Вы успешно зарегистрированы, и вам на почту отправлена ссылка с кодом подтверждения." })
         }else{
-          commit('setLoginResponse', { message: "Вы зарегистрировались" })
+          commit('setLoginResponse', { message: "Произошла ошибка" })
         }
       })
       .catch(error => {
         console.log(error)
-        commit('setLoginResponse', { message: "Вы зарегистрировались" })
+        commit('setLoginResponse', { message: "Электронная почта зарегистрирована" })
+      })
+  },
+  confirm({ commit, dispatch }, { idUser, idCode }){
+    api.get(`/users/user/confirm/${idUser}/${idCode}`)
+      .then(response => {
+        if(response.data.status == "success"){
+          api.get(`/users/read/${idUser}`)
+            .then(response => {
+              dispatch('login', { email: response.data.email, password: response.data.password })
+            })
+        }else{
+          commit('setLoginResponse', { message: "Не правильный код подтверждения" })
+        }
       })
   },
   authRedirect(context, { vm }){
@@ -56,7 +74,7 @@ export default {
   },
 
   addComment({ commit, state }, query){
-    let data = { postComment: JSON.stringify(query)}
+    let data = JSON.stringify(query)
     let headers = { headers: {
       "Content-type": "application/json"
     }}
@@ -64,6 +82,10 @@ export default {
       .then(response => {
         commit('setCommentResponse', "Published")
         location.reload()
+      })
+      .catch(error => {
+        location.reload()
+        console.warn("Error")
       })
   },
   searchReviewPage({ commit, state }, { id }){

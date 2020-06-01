@@ -1,17 +1,13 @@
 <template>
   <div class="form--wrapper">
-    <form class="form" v-on:submit.prevent="login">
+    <form class="form" v-on:submit.prevent="confirm">
       <div class="form-response" v-if="loginResponse">
         <span>{{ loginResponse }}</span>
       </div>
-      <input class="form__field" type="text" :value="idUser" placeholder="ID">
-      <input class="form__field" type="password"  :value="idCode" placeholder="Код подтверждения">
-      <input class="form__button button" type="submit" value="Вход">
-      <router-link class="form__link" to="/register">Зарегистрироваться</router-link>
+      <input class="form__field" type="text" v-model="idUser" placeholder="ID">
+      <input class="form__field" type="text" v-model="idCode" placeholder="Код подтверждения">
+      <input class="form__button button" type="submit" value="Подтвердить аккаунт">
     </form>
-    <div class="form__caption-block">
-      <span class="form__caption">Регистрация предназначена только для студентов.</span>
-    </div>
   </div>
 </template>
 <style>
@@ -74,28 +70,24 @@
   export default{
     data(){
       return {
-        email: '',
-        password: ''
+        idUser: this.$route.params.id,
+        idCode: this.$route.params.code
       }
     },
     computed: {
       loginResponse(){ return this.$store.state.loginResponse },
-      idUser(){
-        return this.$route.params.id
-      },
-      idCode(){
-        return this.$route.params.code
-      }
+    },
+    mounted(){
+      this.isVerified()
     },
     methods: {
-      email_validate(){
-        if(this.email.indexOf("@"))
-          this.email = this.email.split("@")[0] + "@iitu.kz"
-        else
-          this.email = this.email + "@iitu.kz"
+      confirm(){
+        this.$store.dispatch('confirm', { idUser: this.idUser, idCode: this.idCode })
       },
-      login(){
-        this.$store.dispatch('login', { email: this.email, password: this.password })
+      isVerified(){
+        if(localStorage.access_token && JSON.parse(localStorage.access_token).user){
+          this.$router.push('/')
+        }
       }
     }
   }

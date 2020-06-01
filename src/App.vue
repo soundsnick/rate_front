@@ -1,9 +1,11 @@
 <template>
   <div id="app" class="app">
     <Header v-if="headerRenderCondition" :additionalClasses="isShadowed" />
-    <p class="warning" v-if="!notConfirmed">
-      Мы отправили вам письмо с подтверждением электронной почты!
-    </p>
+    <div class="container" v-if="!notConfirmed">
+      <p class="warning">
+        Подтвердите аккаунт чтобы использовать сервис!
+      </p>
+    </div>
     <router-view/>
     <Footer />
   </div>
@@ -13,6 +15,14 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+  }
+  .warning{
+    margin-bottom: 15px;
+    display: block;
+    padding: 20px;
+    background: var(--default-active);
+    color: inherit;
+    border-radius: 4px;
   }
 </style>
 
@@ -40,9 +50,9 @@
         return (filtered.indexOf(this.$route.name) !== -1) ? "with-shadow" : ""
       },
       notConfirmed(){
-        if(localStorage.access_token){
-          let user = JSON.parse(localStorage.access_token)
-          return (user.user) ? user.user.isVerified : true
+        if(localStorage.register_token){
+          let user = JSON.parse(localStorage.register_token)
+          return (user.isVerified == false) ? user.isVerified : true
         }else return true
       }
     },

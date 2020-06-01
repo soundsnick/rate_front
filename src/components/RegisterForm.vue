@@ -10,6 +10,8 @@
       <v-select v-model="selected_department" name="department" :options="departments" />
       <br>
       <v-select v-model="selected_speciality" name="speciality" :options="specialities" />
+      <br>
+      <v-select v-model="selected_course" name="year" :options="courses" />
       <input class="form__button button" type="submit" value="Регистрация">
     </form>
     <div class="form__caption-block">
@@ -22,8 +24,9 @@
   export default{
     data(){
       return {
-        selected_department: { label: "Кафедра", value: 0},
-        selected_speciality: { label: "Специальность", value: 0},
+        selected_department: { label: "Кафедра", value: null},
+        selected_speciality: { label: "Специальность", value: null},
+        selected_course: { label: "1 Курс", value: 1 },
         email: '',
         password: '',
         name: ''
@@ -34,6 +37,14 @@
       this.$store.dispatch('getSpecialities')
     },
     computed: {
+      courses(){
+        return [
+          { label: "1 Курс", value: 1 },
+          { label: "2 Курс", value: 2 },
+          { label: "3 Курс", value: 3 },
+          { label: "4 Курс", value: 4 }
+        ]
+      },
       departments(){
         return this.$store.getters.getSelectDepartments
       },
@@ -45,18 +56,14 @@
     methods: {
       register(){
         this.$store.dispatch('register',
-          JSON.stringify({
-            degree: "string",
-            departmentId: "string",
+          {
+            departmentId: this.selected_department.value,
             email: this.email,
-            group: "string",
-            id: "string",
-            isVerified: true,
             name: this.name,
             password: this.password,
-            specialityId: "string",
-            year: 0
-          })
+            specialityId: this.selected_speciality.value,
+            year: this.selected_course.value
+          }
         )
       }
     }

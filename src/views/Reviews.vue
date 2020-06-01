@@ -4,7 +4,7 @@
       <Search buttonStyle="primary"/>
       <div class="reviews-body">
         <RateListItem :rate="rate" />
-        <SquareButton additionalClasses="review-add-button" descriptor="primary" @click.native="popup()">
+        <SquareButton additionalClasses="review-add-button" descriptor="primary" @click.native="popup()" v-if="isAuthenticated && isStudent">
           {{ $t('review.add') }}
         </SquareButton>
         <div class="reviews-grid">
@@ -27,7 +27,7 @@
         </div>
       </div>
     </div>
-    <div :class="['popup--wrapper', popupState.toString()]">
+    <div :class="['popup--wrapper', popupState.toString()]" v-if="isStudent">
       <button type="button" class="close-button" @click="popupState = !popupState">Close</button>
       <Popup title="Добавить отзыв" textarea="true" :reviewId="reviewPage.reviewId" :levelsHash="levelsHash" :tags="tagsArray" />
     </div>
@@ -95,12 +95,12 @@
   .reviews__level{
     display: block;
     line-height: 1.3;
-    padding: 5px 0;
     font-size: 18px;
   }
   .reviews-reviews--wrapper{
     margin: 30px 0;
   }
+
 </style>
 <script type="text/javascript">
   import Search from '../components/Search.vue'
@@ -139,6 +139,9 @@
       this.$store.dispatch('getCodeReviews', { id: this.id, code: this.code })
     },
     computed: {
+      isStudent(){
+        return (localStorage.access_token) ? JSON.parse(localStorage.access_token).user : false
+      },
       tagsArray(){
         return ["Интересная студенческая жизнь","Веселые практические задания", "Отличная работа со студентами",
         "Обратная связь", "Объективность", "Прислушиваются к мнению студентов", "Поддержка", "Перспективы",
@@ -192,16 +195,9 @@
       tags(){
         if(this.codeReviews.commentCustomList && this.codeReviews.commentCustomList.length > 0){
           return [...new Set(this.codeReviews.commentCustomList.reduce((acc, el) => {
-            return (el.comment.feedback) ? [...acc, ...el.comment.feedback.split(',')] : acc
+            return (el.comment.tags) ? [...acc, ...el.comment.tags.split(',')] : acc
           }, []))].map((el, index) => ({ title: el, key: index }))
         }else return []
-        return [
-          { title: "Классно", key: 0},
-          { title: "Интересно", key: 1},
-          { title: "Все круто", key: 2},
-          { title: "Качественно", key: 3},
-          { title: "Пойдет", key: 4},
-        ]
       },
       levelsHash(){
         if(this.codeReviews.criteriaList){
@@ -227,8 +223,8 @@
               }),
               text: el.comment.text,
             }
-            if(el.comment.feedback){
-              obj.tags = el.comment.feedback.split(',').map((fb, index) => ({ title: fb, key: index}))
+            if(el.comment.tags){
+              obj.tags = el.comment.tags.split(',').map((fb, index) => ({ title: fb, key: index}))
             }
             return obj
           })
@@ -239,7 +235,7 @@
     methods: {
       popup(){
         this.popupState = !this.popupState
-      }
+      },
     }
   }
 </script>

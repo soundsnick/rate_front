@@ -17,7 +17,6 @@
     margin: auto;
     border: 1px solid rgba(0,0,0,0.2);
     border-radius: 8px;
-    overflow: hidden;
     box-shadow: 0px 4px 4px -2px rgba(0, 0, 0, 0.15);
   }
   .login-form__heading{
